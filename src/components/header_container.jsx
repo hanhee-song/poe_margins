@@ -1,4 +1,4 @@
-import { fetchTradeInfo } from '../actions/fetch_info';
+import { fetchAllStashes } from '../actions/fetch_info';
 import { connect } from 'react-redux';
 import Header from './header';
 
@@ -10,7 +10,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchTradeInfo: () => dispatch(fetchTradeInfo())
+    fetchAllStashes: () => dispatch(fetchAllStashes())
   };
 };
 

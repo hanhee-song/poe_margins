@@ -4,7 +4,6 @@ export const makeRequest = (method, url, query) => {
     request.open(method, url);
     request.onload = function() {
       console.log(request);
-      debugger;
       if (this.status === 200) {
         resolve(JSON.parse(request.response));
       } else {
@@ -35,24 +34,58 @@ export const fetchIndex = () => {
   return makeRequest("GET", url);
 };
 
-export const fetchTradeInfo = (query) => {
-  query = {
-    "query": {
-      "status": {
-        "option": "online"
-      },
-      "name": "The Pariah",
-      "type": "Unset Ring",
-      "stats": [{
-        "type": "and",
-        "filters": []
-      }]
-    },
-    "sort": {
-      "price": "asc"
-    }
-  };
-  let url = "https://www.pathofexile.com/api/trade/search/abyss";
-  // return makeRequest("GET", url, JSON.stringify(query));
-  return makeRequest("GET", url);
+export const fetchAllStashes = () => {
+  return makeRequest("GET", "http://api.pathofexile.com/public-stash-tabs");
 };
+
+// export const fetchTradeInfo = (query) => {
+//   query = {
+//     "query": {
+//       "status": {
+//         "option": "online"
+//       },
+//       "name": "The Pariah",
+//       "type": "Unset Ring",
+//       "stats": [{
+//         "type": "and",
+//         "filters": []
+//       }]
+//     },
+//     "sort": {
+//       "price": "asc"
+//     }
+//   };
+//   let url = "https://www.pathofexile.com/api/trade/search/abyss";
+//   // return makeRequest("GET", url, JSON.stringify(query));
+//   return makeRequest("GET", url);
+// };
+
+// export const fetchTradeInfo = (query) => {
+//   query = {
+//     "query": {
+//       "status": {
+//         "option": "online"
+//       },
+//       "name": "The Pariah",
+//       "type": "Unset Ring",
+//       "stats": [{
+//         "type": "and",
+//         "filters": []
+//       }]
+//     },
+//     "sort": {
+//       "price": "asc"
+//     }
+//   };
+//   let url = "https://www.pathofexile.com/api/trade/search/abyss";
+//   return $.ajax({
+//   headers: {
+//       'Accept': 'application/json',
+//       'Content-Type': 'application/json'
+//   },
+//   'type': 'POST',
+//   'url': url,
+//   'data': JSON.stringify(query),
+//   'dataType': 'json',
+//   });
+// };

@@ -1,7 +1,8 @@
-import * as AJAX from '../util/ajax';
+import * as ajax from '../util/ajax';
 
 export const RECEIVE_TRADE_INFO = "RECEIVE_TRADE_INFO";
 export const RECEIVE_INDEX = "RECEIVE_INDEX";
+export const RECEIVE_ALL_STASHES = "RECEIVE_ALL_STASHES";
 
 export const receiveTradeInfo = info => {
   return {
@@ -17,9 +18,16 @@ export const receiveIndex = info => {
   };
 };
 
+export const receiveAllStashes = info => {
+  return {
+    type: RECEIVE_ALL_STASHES,
+    info
+  };
+};
+
 export const fetchIndex = () => {
   return dispatch => {
-    return AJAX.fetchIndex()
+    return ajax.fetchIndex()
       .then(
         info => dispatch(receiveIndex(info))
       );
@@ -28,9 +36,18 @@ export const fetchIndex = () => {
 
 export const fetchTradeInfo = () => {
   return dispatch => {
-    return AJAX.fetchTradeInfo()
+    return ajax.fetchTradeInfo()
       .then(
         info => dispatch(receiveTradeInfo(info))
+      );
+  };
+};
+
+export const fetchAllStashes = () => {
+  return dispatch => {
+    return ajax.fetchAllStashes()
+      .then(
+        info => dispatch(receiveAllStashes(info))
       );
   };
 };

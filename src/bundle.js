@@ -2172,16 +2172,17 @@ function verifyPlainObject(value, displayName, methodName) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.fetchTradeInfo = exports.fetchIndex = exports.receiveIndex = exports.receiveTradeInfo = exports.RECEIVE_INDEX = exports.RECEIVE_TRADE_INFO = undefined;
+exports.fetchAllStashes = exports.fetchTradeInfo = exports.fetchIndex = exports.receiveAllStashes = exports.receiveIndex = exports.receiveTradeInfo = exports.RECEIVE_ALL_STASHES = exports.RECEIVE_INDEX = exports.RECEIVE_TRADE_INFO = undefined;
 
 var _ajax = __webpack_require__(100);
 
-var AJAX = _interopRequireWildcard(_ajax);
+var ajax = _interopRequireWildcard(_ajax);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 var RECEIVE_TRADE_INFO = exports.RECEIVE_TRADE_INFO = "RECEIVE_TRADE_INFO";
 var RECEIVE_INDEX = exports.RECEIVE_INDEX = "RECEIVE_INDEX";
+var RECEIVE_ALL_STASHES = exports.RECEIVE_ALL_STASHES = "RECEIVE_ALL_STASHES";
 
 var receiveTradeInfo = exports.receiveTradeInfo = function receiveTradeInfo(info) {
   return {
@@ -2197,9 +2198,16 @@ var receiveIndex = exports.receiveIndex = function receiveIndex(info) {
   };
 };
 
+var receiveAllStashes = exports.receiveAllStashes = function receiveAllStashes(info) {
+  return {
+    type: RECEIVE_ALL_STASHES,
+    info: info
+  };
+};
+
 var fetchIndex = exports.fetchIndex = function fetchIndex() {
   return function (dispatch) {
-    return AJAX.fetchIndex().then(function (info) {
+    return ajax.fetchIndex().then(function (info) {
       return dispatch(receiveIndex(info));
     });
   };
@@ -2207,8 +2215,16 @@ var fetchIndex = exports.fetchIndex = function fetchIndex() {
 
 var fetchTradeInfo = exports.fetchTradeInfo = function fetchTradeInfo() {
   return function (dispatch) {
-    return AJAX.fetchTradeInfo().then(function (info) {
+    return ajax.fetchTradeInfo().then(function (info) {
       return dispatch(receiveTradeInfo(info));
+    });
+  };
+};
+
+var fetchAllStashes = exports.fetchAllStashes = function fetchAllStashes() {
+  return function (dispatch) {
+    return ajax.fetchAllStashes().then(function (info) {
+      return dispatch(receiveAllStashes(info));
     });
   };
 };
@@ -21931,8 +21947,8 @@ var mapStateToProps = function mapStateToProps(state) {
 
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return {
-    fetchTradeInfo: function fetchTradeInfo() {
-      return dispatch((0, _fetch_info.fetchTradeInfo)());
+    fetchAllStashes: function fetchAllStashes() {
+      return dispatch((0, _fetch_info.fetchAllStashes)());
     }
   };
 };
@@ -21955,7 +21971,6 @@ var makeRequest = exports.makeRequest = function makeRequest(method, url, query)
     request.open(method, url);
     request.onload = function () {
       console.log(request);
-      debugger;
       if (this.status === 200) {
         resolve(JSON.parse(request.response));
       } else {
@@ -21986,27 +22001,61 @@ var fetchIndex = exports.fetchIndex = function fetchIndex() {
   return makeRequest("GET", url);
 };
 
-var fetchTradeInfo = exports.fetchTradeInfo = function fetchTradeInfo(query) {
-  query = {
-    "query": {
-      "status": {
-        "option": "online"
-      },
-      "name": "The Pariah",
-      "type": "Unset Ring",
-      "stats": [{
-        "type": "and",
-        "filters": []
-      }]
-    },
-    "sort": {
-      "price": "asc"
-    }
-  };
-  var url = "https://www.pathofexile.com/api/trade/search/abyss";
-  // return makeRequest("GET", url, JSON.stringify(query));
-  return makeRequest("GET", url);
+var fetchAllStashes = exports.fetchAllStashes = function fetchAllStashes() {
+  return makeRequest("GET", "http://api.pathofexile.com/public-stash-tabs");
 };
+
+// export const fetchTradeInfo = (query) => {
+//   query = {
+//     "query": {
+//       "status": {
+//         "option": "online"
+//       },
+//       "name": "The Pariah",
+//       "type": "Unset Ring",
+//       "stats": [{
+//         "type": "and",
+//         "filters": []
+//       }]
+//     },
+//     "sort": {
+//       "price": "asc"
+//     }
+//   };
+//   let url = "https://www.pathofexile.com/api/trade/search/abyss";
+//   // return makeRequest("GET", url, JSON.stringify(query));
+//   return makeRequest("GET", url);
+// };
+
+// export const fetchTradeInfo = (query) => {
+//   query = {
+//     "query": {
+//       "status": {
+//         "option": "online"
+//       },
+//       "name": "The Pariah",
+//       "type": "Unset Ring",
+//       "stats": [{
+//         "type": "and",
+//         "filters": []
+//       }]
+//     },
+//     "sort": {
+//       "price": "asc"
+//     }
+//   };
+//   let url = "https://www.pathofexile.com/api/trade/search/abyss";
+//   return $.ajax({
+//   headers: {
+//       'Accept': 'application/json',
+//       'Content-Type': 'application/json'
+//   },
+//   'type': 'POST',
+//   'url': url,
+//   'data': JSON.stringify(query),
+//   'dataType': 'json',
+//   });
+// };
 
 /***/ }),
 /* 101 */
@@ -22048,7 +22097,7 @@ var Header = function (_React$Component) {
   _createClass(Header, [{
     key: 'handleFetch',
     value: function handleFetch() {
-      this.props.fetchTradeInfo();
+      this.props.fetchAllStashes();
     }
   }, {
     key: 'render',
@@ -22203,6 +22252,13 @@ var StashesReducer = function StashesReducer() {
     case _fetch_info.RECEIVE_INDEX:
       debugger;
       return state;
+    case _fetch_info.RECEIVE_ALL_STASHES:
+      debugger;
+      var stashes = action.info.stashes;
+      stashes = stashes.filter(function (stash) {
+        return stash.public;
+      });
+      return stashes;
     default:
       return state;
   }
