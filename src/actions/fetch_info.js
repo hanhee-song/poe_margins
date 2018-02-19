@@ -13,7 +13,10 @@ export const fetchInfo = () => {
   return (dispatch) => {
     return AJAX.fetchInfo()
       .then(
-        info => dispatch(receiveInfo)
+        info => {
+          debugger;
+          dispatch(receiveInfo);
+        }
       );
   };
 };

@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack --watch",
     "watch": "webpack --watch",
-    "sass": "sass --watch scss:styles"
+    "sass": "sass --watch scss:styles",
+    "reload": "reload -b"
   },
   "author": "Hanhee Song",
   "license": "ISC",
