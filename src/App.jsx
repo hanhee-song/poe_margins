@@ -1,12 +1,14 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { Provider } from 'react-redux';
 
 class App extends React.Component {
   render () {
     return (
-      <div className="app">
-        Your react is working
-      </div>
+      <Provider store={this.props.store}>
+        <div className="app">
+          Your react is working
+        </div>
+      </Provider>
     );
   }
 }
