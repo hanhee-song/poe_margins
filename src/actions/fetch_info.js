@@ -1,4 +1,4 @@
-import { makeRequest } from '../util/ajax';
+import * as AJAX from '../util/ajax';
 
 export const RECEIVE_INFO = "RECEIVE_INFO";
 
@@ -11,7 +11,7 @@ export const receiveInfo = (info) => {
 
 export const fetchInfo = () => {
   return (dispatch) => {
-    return makeRequest()
+    return AJAX.fetchInfo()
       .then(
         info => dispatch(receiveInfo)
       );

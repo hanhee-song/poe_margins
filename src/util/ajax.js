@@ -21,3 +21,11 @@ export const makeRequest = (method, url) => {
     request.send();
   });
 };
+
+export const fetchInfo = (nextId) => {
+  let url = "http://www.pathofexile.com/api/public-stash-tabs";
+  if (nextId) {
+    url += nextId;
+  }
+  makeRequest("GET", url);
+};
