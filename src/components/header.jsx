@@ -7,7 +7,7 @@ class Header extends React.Component {
   }
   
   handleFetch() {
-    this.props.fetchInfo();
+    this.props.fetchTradeInfo();
   }
   
   render () {

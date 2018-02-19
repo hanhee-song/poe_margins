@@ -2172,7 +2172,7 @@ function verifyPlainObject(value, displayName, methodName) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.fetchInfo = exports.receiveInfo = exports.RECEIVE_INFO = undefined;
+exports.fetchTradeInfo = exports.fetchIndex = exports.receiveIndex = exports.receiveTradeInfo = exports.RECEIVE_INDEX = exports.RECEIVE_TRADE_INFO = undefined;
 
 var _ajax = __webpack_require__(100);
 
@@ -2180,20 +2180,35 @@ var AJAX = _interopRequireWildcard(_ajax);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-var RECEIVE_INFO = exports.RECEIVE_INFO = "RECEIVE_INFO";
+var RECEIVE_TRADE_INFO = exports.RECEIVE_TRADE_INFO = "RECEIVE_TRADE_INFO";
+var RECEIVE_INDEX = exports.RECEIVE_INDEX = "RECEIVE_INDEX";
 
-var receiveInfo = exports.receiveInfo = function receiveInfo(info) {
+var receiveTradeInfo = exports.receiveTradeInfo = function receiveTradeInfo(info) {
   return {
-    type: RECEIVE_INFO,
+    type: RECEIVE_TRADE_INFO,
     info: info
   };
 };
 
-var fetchInfo = exports.fetchInfo = function fetchInfo() {
+var receiveIndex = exports.receiveIndex = function receiveIndex(info) {
+  return {
+    type: RECEIVE_INDEX,
+    info: info
+  };
+};
+
+var fetchIndex = exports.fetchIndex = function fetchIndex() {
   return function (dispatch) {
-    return AJAX.fetchInfo().then(function (info) {
-      debugger;
-      dispatch(receiveInfo);
+    return AJAX.fetchIndex().then(function (info) {
+      return dispatch(receiveIndex(info));
+    });
+  };
+};
+
+var fetchTradeInfo = exports.fetchTradeInfo = function fetchTradeInfo() {
+  return function (dispatch) {
+    return AJAX.fetchTradeInfo().then(function (info) {
+      return dispatch(receiveTradeInfo(info));
     });
   };
 };
@@ -21916,8 +21931,8 @@ var mapStateToProps = function mapStateToProps(state) {
 
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return {
-    fetchInfo: function fetchInfo() {
-      return dispatch((0, _fetch_info.fetchInfo)());
+    fetchTradeInfo: function fetchTradeInfo() {
+      return dispatch((0, _fetch_info.fetchTradeInfo)());
     }
   };
 };
@@ -21934,14 +21949,15 @@ exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-var makeRequest = exports.makeRequest = function makeRequest(method, url) {
+var makeRequest = exports.makeRequest = function makeRequest(method, url, query) {
   return new Promise(function (resolve, reject) {
     var request = new XMLHttpRequest();
-    debugger;
     request.open(method, url);
     request.onload = function () {
+      console.log(request);
+      debugger;
       if (this.status === 200) {
-        resolve(request);
+        resolve(JSON.parse(request.response));
       } else {
         reject({
           status: this.status,
@@ -21955,33 +21971,40 @@ var makeRequest = exports.makeRequest = function makeRequest(method, url) {
         statusText: request.statusText
       });
     };
-    var query = {
-      "query": {
-        "status": {
-          "option": "online"
-        },
-        "name": "The Pariah",
-        "type": "Unset Ring",
-        "stats": [{
-          "type": "and",
-          "filters": []
-        }]
-      },
-      "sort": {
-        "price": "asc"
-      }
-    };
-
-    request.send();
+    if (query) {
+      request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+      request.send(query);
+    } else {
+      request.send();
+    }
   });
 };
 
-var fetchInfo = exports.fetchInfo = function fetchInfo(nextId) {
+var fetchIndex = exports.fetchIndex = function fetchIndex() {
   // let url = "https://www.pathofexile.com/api/trade/search/abyss";
   var url = "https://www.pathofexile.com/api/trade/data/items";
-  if (nextId) {
-    url += nextId;
-  }
+  return makeRequest("GET", url);
+};
+
+var fetchTradeInfo = exports.fetchTradeInfo = function fetchTradeInfo(query) {
+  query = {
+    "query": {
+      "status": {
+        "option": "online"
+      },
+      "name": "The Pariah",
+      "type": "Unset Ring",
+      "stats": [{
+        "type": "and",
+        "filters": []
+      }]
+    },
+    "sort": {
+      "price": "asc"
+    }
+  };
+  var url = "https://www.pathofexile.com/api/trade/search/abyss";
+  // return makeRequest("GET", url, JSON.stringify(query));
   return makeRequest("GET", url);
 };
 
@@ -22025,7 +22048,7 @@ var Header = function (_React$Component) {
   _createClass(Header, [{
     key: 'handleFetch',
     value: function handleFetch() {
-      this.props.fetchInfo();
+      this.props.fetchTradeInfo();
     }
   }, {
     key: 'render',
@@ -22173,8 +22196,11 @@ var StashesReducer = function StashesReducer() {
   Object.freeze(state);
   var newState = (0, _merge2.default)({}, state);
   switch (action.type) {
-    case _fetch_info.RECEIVE_INFO:
+    case _fetch_info.RECEIVE_TRADE_INFO:
       // TODO
+      debugger;
+      return state;
+    case _fetch_info.RECEIVE_INDEX:
       debugger;
       return state;
     default:

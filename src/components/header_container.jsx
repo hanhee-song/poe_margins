@@ -1,4 +1,4 @@
-import { fetchInfo } from '../actions/fetch_info';
+import { fetchTradeInfo } from '../actions/fetch_info';
 import { connect } from 'react-redux';
 import Header from './header';
 
@@ -10,7 +10,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchInfo: () => dispatch(fetchInfo())
+    fetchTradeInfo: () => dispatch(fetchTradeInfo())
   };
 };
 

@@ -1,22 +1,36 @@
 import * as AJAX from '../util/ajax';
 
-export const RECEIVE_INFO = "RECEIVE_INFO";
+export const RECEIVE_TRADE_INFO = "RECEIVE_TRADE_INFO";
+export const RECEIVE_INDEX = "RECEIVE_INDEX";
 
-export const receiveInfo = (info) => {
+export const receiveTradeInfo = info => {
   return {
-    type: RECEIVE_INFO,
+    type: RECEIVE_TRADE_INFO,
     info
   };
 };
 
-export const fetchInfo = () => {
-  return (dispatch) => {
-    return AJAX.fetchInfo()
+export const receiveIndex = info => {
+  return {
+    type: RECEIVE_INDEX,
+    info
+  };
+};
+
+export const fetchIndex = () => {
+  return dispatch => {
+    return AJAX.fetchIndex()
       .then(
-        info => {
-          debugger;
-          dispatch(receiveInfo);
-        }
+        info => dispatch(receiveIndex(info))
+      );
+  };
+};
+
+export const fetchTradeInfo = () => {
+  return dispatch => {
+    return AJAX.fetchTradeInfo()
+      .then(
+        info => dispatch(receiveTradeInfo(info))
       );
   };
 };
