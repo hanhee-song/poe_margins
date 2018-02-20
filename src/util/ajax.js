@@ -5,7 +5,6 @@ export const makeRequest = (method, url, query) => {
     xhr.open(method, url);
     
     xhr.onload = function() {
-      console.log(xhr);
       if (this.status === 200) {
         resolve(JSON.parse(xhr.response));
       } else {

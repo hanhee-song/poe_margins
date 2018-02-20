@@ -4,13 +4,13 @@ import Header from './header';
 
 const mapStateToProps = (state) => {
   return {
-    nextChangeId: state.nextChangeId
+    
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchProphecies: () => dispatch(fetchProphecies())
+    
   };
 };
 

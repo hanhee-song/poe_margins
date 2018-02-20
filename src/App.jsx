@@ -1,6 +1,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import HeaderContainer from './components/header_container';
+import PropheciesIndexContainer from './components/prophecies_index_container';
 
 class App extends React.Component {
   render () {
@@ -8,7 +9,7 @@ class App extends React.Component {
       <Provider store={this.props.store}>
         <div className="app">
           <HeaderContainer />
-          Your react is working
+          <PropheciesIndexContainer />
         </div>
       </Provider>
     );
