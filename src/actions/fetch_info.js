@@ -43,9 +43,9 @@ export const fetchTradeInfo = () => {
   };
 };
 
-export const fetchAllStashes = () => {
+export const fetchAllStashes = (id) => {
   return dispatch => {
-    return ajax.fetchAllStashes()
+    return ajax.fetchAllStashes(id)
       .then(
         info => dispatch(receiveAllStashes(info))
       );

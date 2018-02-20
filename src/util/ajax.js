@@ -1,29 +1,36 @@
 export const makeRequest = (method, url, query) => {
   return new Promise(function(resolve, reject) {
-    const request = new XMLHttpRequest();
-    request.open(method, url);
-    request.onload = function() {
-      console.log(request);
+    const xhr = new XMLHttpRequest();
+    // xhr.withCredentials = true;
+    xhr.open(method, url);
+    
+    xhr.onload = function() {
+      console.log(xhr);
       if (this.status === 200) {
-        resolve(JSON.parse(request.response));
+        resolve(JSON.parse(xhr.response));
       } else {
         reject({
           status: this.status,
-          statusText: request.statusText
+          statusText: xhr.statusText
         });
       }
     };
-    request.onerror = function() {
+    xhr.onerror = function() {
       reject({
         status: this.status,
-        statusText: request.statusText
+        statusText: xhr.statusText
       });
     };
+    
     if (query) {
-      request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-      request.send(query);
+      if (typeof query !== "string") {
+        query = JSON.stringify(query);
+      }
+      xhr.setRequestHeader("Content-Type", "application/json");
+      // xhr.setRequestHeader("cache-control", "no-cache");
+      xhr.send(query);
     } else {
-      request.send();
+      xhr.send();
     }
   });
 };
@@ -34,31 +41,35 @@ export const fetchIndex = () => {
   return makeRequest("GET", url);
 };
 
-export const fetchAllStashes = () => {
-  return makeRequest("GET", "http://api.pathofexile.com/public-stash-tabs");
+export const fetchAllStashes = (id) => {
+  let url = "http://api.pathofexile.com/public-stash-tabs";
+  id = id ? id : "145259010-151925114-142524180-163955037-153711223";
+  // if (id) {
+    url += `/?id=${id}`;
+  // }
+  return makeRequest("GET", url);
 };
 
-// export const fetchTradeInfo = (query) => {
-//   query = {
-//     "query": {
-//       "status": {
-//         "option": "online"
-//       },
-//       "name": "The Pariah",
-//       "type": "Unset Ring",
-//       "stats": [{
-//         "type": "and",
-//         "filters": []
-//       }]
-//     },
-//     "sort": {
-//       "price": "asc"
-//     }
-//   };
-//   let url = "https://www.pathofexile.com/api/trade/search/abyss";
-//   // return makeRequest("GET", url, JSON.stringify(query));
-//   return makeRequest("GET", url);
-// };
+export const fetchTradeInfo = (query) => {
+  query = {
+    "query": {
+      "status": {
+        "option": "online"
+      },
+      "name": "The Pariah",
+      "type": "Unset Ring",
+      "stats": [{
+        "type": "and",
+        "filters": []
+      }]
+    },
+    "sort": {
+      "price": "asc"
+    }
+  };
+  let url = "https://www.pathofexile.com/api/trade/search/abyss";
+  return makeRequest("GET", url, query);
+};
 
 // export const fetchTradeInfo = (query) => {
 //   query = {

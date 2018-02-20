@@ -7,8 +7,18 @@ class Header extends React.Component {
   }
   
   handleFetch() {
-    this.props.fetchAllStashes();
+    // if (id) {
+    //   this.props.fetchAllStashes(id);
+    // } else {
+      this.props.fetchTradeInfo();
+    // }
   }
+  
+  // componentWillReceiveProps(nextProps) {
+  //   if (this.props.nextChangeId !== nextProps.nextChangeId) {
+  //     this.handleFetch(nextProps.nextChangeId);
+  //   }
+  // }
   
   render () {
     return (
