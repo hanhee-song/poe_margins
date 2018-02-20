@@ -24,7 +24,14 @@ module.exports = {
   resolve: {
     extensions: [".js", ".jsx", "*"]
   },
-    plugins: [
+  node: {
+    console: true,
+    fs: 'empty',
+    net: 'empty',
+    tls: 'empty',
+    child_process: 'empty'
+  },
+  plugins: [
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
     }),
