@@ -7,10 +7,11 @@ class Header extends React.Component {
   }
   
   handleFetch() {
+    this.props.fetchProphecies();
     // if (id) {
     //   this.props.fetchAllStashes(id);
     // } else {
-      this.props.fetchTradeInfo();
+      // this.props.fetchTradeIndex();
     // }
   }
   

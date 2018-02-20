@@ -35,41 +35,46 @@ export const makeRequest = (method, url, query) => {
   });
 };
 
-export const fetchIndex = () => {
-  // let url = "https://www.pathofexile.com/api/trade/search/abyss";
-  let url = "https://www.pathofexile.com/api/trade/data/items";
+export const fetchProphecies = () => {
+  let url = "http://poe.ninja/api/Data/GetProphecyOverview?league=Abyss&date=2018-02-20";
   return makeRequest("GET", url);
 };
 
-export const fetchAllStashes = (id) => {
-  let url = "http://api.pathofexile.com/public-stash-tabs";
-  id = id ? id : "145259010-151925114-142524180-163955037-153711223";
-  // if (id) {
-    url += `/?id=${id}`;
-  // }
-  return makeRequest("GET", url);
-};
-
-export const fetchTradeInfo = (query) => {
-  query = {
-    "query": {
-      "status": {
-        "option": "online"
-      },
-      "name": "The Pariah",
-      "type": "Unset Ring",
-      "stats": [{
-        "type": "and",
-        "filters": []
-      }]
-    },
-    "sort": {
-      "price": "asc"
-    }
-  };
-  let url = "https://www.pathofexile.com/api/trade/search/abyss";
-  return makeRequest("GET", url, query);
-};
+// export const fetchIndex = () => {
+//   // let url = "https://www.pathofexile.com/api/trade/search/abyss";
+//   let url = "https://www.pathofexile.com/api/trade/data/items";
+//   return makeRequest("GET", url);
+// };
+//
+// export const fetchAllStashes = (id) => {
+//   let url = "http://api.pathofexile.com/public-stash-tabs";
+//   id = id ? id : "145259010-151925114-142524180-163955037-153711223";
+//   // if (id) {
+//     url += `/?id=${id}`;
+//   // }
+//   return makeRequest("GET", url);
+// };
+//
+// export const fetchTradeInfo = (query) => {
+//   query = {
+//     "query": {
+//       "status": {
+//         "option": "online"
+//       },
+//       "name": "The Pariah",
+//       "type": "Unset Ring",
+//       "stats": [{
+//         "type": "and",
+//         "filters": []
+//       }]
+//     },
+//     "sort": {
+//       "price": "asc"
+//     }
+//   };
+//   let url = "https://www.pathofexile.com/api/trade/search/abyss";
+//   return makeRequest("GET", url, query);
+// };
 
 // export const fetchTradeInfo = (query) => {
 //   query = {
